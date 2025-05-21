@@ -1,0 +1,15 @@
+{
+    "name": "mm to inch Converter",
+    "short_name": "Converter",
+    "start_url": "index.html",
+    "display": "standalone",
+    "background_color": "#f0f0f0",
+    "theme_color": "#007aff",
+    "icons": [
+        {
+            "src": "icon.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}
