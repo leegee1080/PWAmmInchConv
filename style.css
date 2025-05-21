@@ -46,6 +46,7 @@ input[type="number"] {
     border-radius: 8px;
     font-size: 26px; /* Matches iOS native inputs */
     box-sizing: border-box;
+    appearance: none;
     -webkit-appearance: none; /* Remove default iOS styling */
 }
 
