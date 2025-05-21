@@ -2,47 +2,54 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     background-color: #f0f0f0;
     margin: 0;
-    padding: 0;
+    padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
+    box-sizing: border-box;
 }
 
 .container {
     background: white;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 16px;
+    border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-    width: 90%;
-    max-width: 400px;
+    width: 100%;
+    max-width: 350px; /* Fits iPhone 12 Mini’s 375px width */
+    box-sizing: border-box;
 }
 
 h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
+    font-size: 20px; /* Slightly smaller for compact screen */
+    margin: 0 0 16px;
+    font-weight: 600;
 }
 
 .input-group {
-    margin: 15px 0;
+    margin: 12px 0; /* Reduced spacing for compactness */
 }
 
 label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 6px;
+    font-size: 14px; /* Readable but not oversized */
+    font-weight: 500;
 }
 
 input[type="number"] {
     width: 100%;
-    padding: 10px;
+    padding: 12px; /* Larger padding for touch targets */
     border: 1px solid #ccc;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 16px; /* Matches iOS native inputs */
+    box-sizing: border-box;
+    -webkit-appearance: none; /* Remove default iOS styling */
 }
 
 p {
-    margin: 10px 0 0;
-    font-size: 16px;
+    margin: 8px 0 0;
+    font-size: 14px; /* Smaller but readable */
+    color: #333;
 }
