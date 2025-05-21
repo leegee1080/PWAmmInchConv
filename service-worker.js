@@ -1,4 +1,4 @@
-const cacheName = 'converter-app-v7';
+const cacheName = 'converter-app-v8';
 const precacheResources = [
     '/',
     '/index.html',
