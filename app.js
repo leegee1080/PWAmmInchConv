@@ -1,12 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const mmInput = document.getElementById('mmInput');
-    const inchInput = document.getElementById('inchInput');
+    const valueInput = document.getElementById('valueInput');
+    const unitToggle = document.getElementById('unitToggle');
+    const unitIndicator = document.getElementById('unitIndicator');
     const mmResult = document.getElementById('mmResult');
     const inchResult = document.getElementById('inchResult');
+    const numberButtons = document.querySelectorAll('.number-pad .number');
+    const decimalButton = document.querySelector('.number-pad .decimal');
+    const clearButton = document.querySelector('.number-pad .clear');
 
-    // Load saved values from localStorage
-    mmInput.value = localStorage.getItem('mmValue') || '';
-    inchInput.value = localStorage.getItem('inchValue') || '';
+    // Load saved values
+    valueInput.value = localStorage.getItem('value') || '';
+    unitToggle.checked = localStorage.getItem('unit') === 'inch';
     updateResults();
 
     // Conversion functions
@@ -19,34 +23,74 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateResults() {
-        const mmValue = parseFloat(mmInput.value);
-        const inchValue = parseFloat(inchInput.value);
+        const value = parseFloat(valueInput.value);
+        const isInch = unitToggle.checked;
 
-        if (!isNaN(mmValue)) {
-            inchResult.textContent = `Inches: ${mmToInch(mmValue)}`;
-        } else {
-            inchResult.textContent = 'Inches: 0';
-        }
+        unitIndicator.textContent = isInch ? 'inch' : 'mm';
 
-        if (!isNaN(inchValue)) {
-            mmResult.textContent = `mm: ${inchToMm(inchValue)}`;
+        if (!isNaN(value)) {
+            if (isInch) {
+                mmResult.textContent = `mm: ${inchToMm(value)}`;
+                inchResult.textContent = `in: ${value.toFixed(4)}`;
+            } else {
+                mmResult.textContent = `mm: ${value.toFixed(4)}`;
+                inchResult.textContent = `in: ${mmToInch(value)}`;
+            }
         } else {
             mmResult.textContent = 'mm: 0';
+            inchResult.textContent = 'in: 0';
         }
+        localStorage.setItem('value', valueInput.value);
+        localStorage.setItem('unit', isInch ? 'inch' : 'mm');
     }
 
-    // Event listeners for real-time updates
-    mmInput.addEventListener('input', () => {
-        localStorage.setItem('mmValue', mmInput.value);
-        inchInput.value = ''; // Clear other input
-        localStorage.setItem('inchValue', '');
+    // Input event
+    valueInput.addEventListener('input', () => {
+        console.log('Input event triggered, value:', valueInput.value);
         updateResults();
     });
 
-    inchInput.addEventListener('input', () => {
-        localStorage.setItem('inchValue', inchInput.value);
-        mmInput.value = ''; // Clear other input
-        localStorage.setItem('mmValue', '');
+    // Toggle event
+    unitToggle.addEventListener('change', updateResults);
+
+    // Number pad buttons
+    numberButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            console.log('Number button clicked:', button.textContent);
+            valueInput.value += button.textContent;
+            valueInput.focus();
+            updateResults();
+        });
+    });
+
+    // Decimal button
+    decimalButton.addEventListener('click', () => {
+        console.log('Decimal button clicked, before:', valueInput.value);
+        if (!valueInput.value.includes('.')) {
+            if (valueInput.value === '') {
+                valueInput.value = '0.';
+            } else {
+                valueInput.value += '.';
+            }
+            setTimeout(() => {
+                console.log('Decimal button after:', valueInput.value);
+                valueInput.focus();
+                updateResults();
+            }, 0);
+        }
+    });
+
+    // Clear button
+    clearButton.addEventListener('click', () => {
+        console.log('Clear button clicked');
+        valueInput.value = '';
+        valueInput.focus();
         updateResults();
+    });
+
+    // Ensure focus on touch
+    valueInput.addEventListener('touchstart', () => {
+        console.log('Input touched');
+        setTimeout(() => valueInput.focus(), 0);
     });
 });
