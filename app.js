@@ -8,12 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const decimalButton = document.querySelector('.number-pad .decimal');
     const clearButton = document.querySelector('.number-pad .clear');
 
-    // Load saved values
-    valueInput.value = localStorage.getItem('value') || '';
-    unitToggle.checked = localStorage.getItem('unit') === 'inch';
-    updateResults();
-
-    // Conversion functions
     function mmToInch(mm) {
         return (mm / 25.4).toFixed(4);
     }
@@ -44,28 +38,21 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('unit', isInch ? 'inch' : 'mm');
     }
 
-    // Input event
     valueInput.addEventListener('input', () => {
-        console.log('Input event triggered, value:', valueInput.value);
         updateResults();
     });
 
-    // Toggle event
     unitToggle.addEventListener('change', updateResults);
 
-    // Number pad buttons
     numberButtons.forEach(button => {
         button.addEventListener('click', () => {
-            console.log('Number button clicked:', button.textContent);
             valueInput.value += button.textContent;
             valueInput.focus();
             updateResults();
         });
     });
 
-    // Decimal button
     decimalButton.addEventListener('click', () => {
-        console.log('Decimal button clicked, before:', valueInput.value);
         if (!valueInput.value.includes('.')) {
             if (valueInput.value === '') {
                 valueInput.value = '0.';
@@ -73,24 +60,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 valueInput.value += '.';
             }
             setTimeout(() => {
-                console.log('Decimal button after:', valueInput.value);
                 valueInput.focus();
                 updateResults();
             }, 0);
         }
     });
 
-    // Clear button
     clearButton.addEventListener('click', () => {
-        console.log('Clear button clicked');
         valueInput.value = '';
         valueInput.focus();
         updateResults();
     });
 
-    // Ensure focus on touch
+    // Prevent keyboard from closing on touch devices
+    // This is a workaround for some mobile browsers that close the keyboard
     valueInput.addEventListener('touchstart', () => {
-        console.log('Input touched');
         setTimeout(() => valueInput.focus(), 0);
     });
 });
